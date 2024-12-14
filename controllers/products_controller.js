@@ -4,7 +4,7 @@ const ProductsController = {
       //get data from database
 
       //return data from database
-      res.json({ test: "test" });
+      res.send("products page");
     } catch (error) {
       res.sendStatus(500);
     }
