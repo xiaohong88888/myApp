@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id       String          @id
+  name     String
+  price    Decimal          @db.Decimal(10, 2)
+  orders   ProductOrder[]  // Relation to ProductOrder
+}
+
+model Order {
+  id         String          @id @default(cuid())
+  createdAt  DateTime        @default(now())
+  products   ProductOrder[]  // Relation to ProductOrder
+  totalPrice Decimal          @db.Decimal(10, 2)
+}
+
+model ProductOrder {
+  id         Int       @id @default(autoincrement()) // Primary key for join table
+  product    Product   @relation(fields: [productId], references: [id])
+  productId  String
+  order      Order     @relation(fields: [orderId], references: [id])
+  orderId    String
+  quantity   Int
+
+  @@unique([productId, orderId]) // Ensures unique product-order combination
+}
