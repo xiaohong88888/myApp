@@ -35,12 +35,12 @@ const OrdersController = {
       res.sendStatus(500);
     }
   },
-  createUser: async (req, res) => {
+  createOrder: async (req, res) => {
     const order = req.body;
 
     try {
       const newOrder = await prisma.order.create({
-        data: { order },
+        data: order,
       });
       res.status(201).json(newOrder);
     } catch (error) {

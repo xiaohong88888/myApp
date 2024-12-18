@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Product {
-  id       String          @id
+  id       Int          @id @default(autoincrement())
   name     String
   price    Decimal          @db.Decimal(10, 2)
   orders   ProductOrder[]  // Relation to ProductOrder
@@ -27,7 +27,7 @@ model Order {
 model ProductOrder {
   id         Int       @id @default(autoincrement()) // Primary key for join table
   product    Product   @relation(fields: [productId], references: [id])
-  productId  String
+  productId  Int
   order      Order     @relation(fields: [orderId], references: [id])
   orderId    String
   quantity   Int
