@@ -1,10 +1,18 @@
+const prisma = require("../config/prisma");
 const OrdersController = {
   getAllOrders: async (req, res) => {
     try {
       //get data from database
-
+      const orders = await prisma.order.findMany({
+        select: {
+          id: true,
+          createdAt: true,
+          products: true,
+          totalPrice: true,
+        },
+      });
       //return data from database
-      res.send("orders page");
+      res.json(orders);
     } catch (error) {
       res.sendStatus(500);
     }
@@ -12,9 +20,31 @@ const OrdersController = {
   getOrderById: async (req, res) => {
     try {
       const { id } = req.params;
-      res.json({ id: id });
+
+      const order = await prisma.order.findUnique({
+        where: {
+          id: Number.parseInt(id),
+        },
+      });
+      if (order) {
+        res.json(order);
+      } else {
+        res.sendStatus(404);
+      }
     } catch (error) {
       res.sendStatus(500);
+    }
+  },
+  createUser: async (req, res) => {
+    const order = req.body;
+
+    try {
+      const newOrder = await prisma.order.create({
+        data: { order },
+      });
+      res.status(201).json(newOrder);
+    } catch (error) {
+      console.log(error);
     }
   },
 };
