@@ -28,7 +28,7 @@ model ProductOrder {
   id         Int       @id @default(autoincrement()) // Primary key for join table
   product    Product   @relation(fields: [productId], references: [id])
   productId  Int
-  order      Order     @relation(fields: [orderId], references: [id])
+  order      Order     @relation(fields: [orderId], references: [id], onDelete: Cascade) // Cascade deletion
   orderId    String
   quantity   Int
 
