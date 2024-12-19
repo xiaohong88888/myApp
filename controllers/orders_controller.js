@@ -7,7 +7,19 @@ const OrdersController = {
         select: {
           id: true,
           createdAt: true,
-          products: true,
+          products: {
+            select: {
+              id: true,
+              product: {
+                select: {
+                  id: true,
+                  name: true,
+                  price: true,
+                },
+              },
+              quantity: true,
+            },
+          },
           totalPrice: true,
         },
       });
